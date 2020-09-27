@@ -1,0 +1,8 @@
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.ExportViewsToVRForm.resources
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.csproj.GenerateResource.cache
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.csproj.CoreCompileInputs.cache
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.Properties.Resources.resources
+E:\#7-代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.dll
+E:\#7-代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.pdb
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.dll
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.pdb

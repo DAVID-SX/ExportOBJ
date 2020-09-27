@@ -1,0 +1,17 @@
+E:\#7-代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.dll
+E:\#7-代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.pdb
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.ExportViewsToVRForm.resources
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.Properties.Resources.resources
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportToVR.csproj.GenerateResource.cache
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportToVR.csproj.CoreCompileInputs.cache
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.dll
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.pdb
+E:\#7-代码文件\ExportObj\ExportObj\obj\Debug\ExportToVR.csprojAssemblyReference.cache
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.dll
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\bin\Debug\ExportObj.pdb
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.ExportViewsToVRForm.resources
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.Properties.Resources.resources
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportToVR.csproj.GenerateResource.cache
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportToVR.csproj.CoreCompileInputs.cache
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.dll
+C:\Users\David\Desktop\代码文件\ExportObj\ExportObj\obj\Debug\ExportObj.pdb

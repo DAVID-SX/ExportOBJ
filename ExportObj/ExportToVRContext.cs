@@ -425,6 +425,7 @@ namespace ExportToObj
                     }
                 }
             }
+            // 非链接模型的导出
             if (!this.isLink)
             {
                 if (node != null)
@@ -510,143 +511,125 @@ namespace ExportToObj
                 if (node != null & node.MaterialId.IntegerValue.ToString() != "-1")
                 {
                     this.currentMaterialId = node.MaterialId;
-                    bool flag44 = this.currentMaterialId != ElementId.InvalidElementId & !this.currentMaterialId.IntegerValue.ToString().Contains("-");
-                    if (flag44)
+                    if (this.currentMaterialId != ElementId.InvalidElementId &
+                        !this.currentMaterialId.IntegerValue.ToString().Contains("-"))
                     {
                         Material material = this.m_document.GetElement(this.currentMaterialId) as Material;
-                        string name = material.Name;
-                        string text27 = name.Replace(" ", "_");
-                        bool flag45 = text27.Length > 40;
-                        if (flag45)
+                        string materialName = material.Name;
+                        string formatedMaterialName = materialName.Replace(" ", "_");
+                        if (formatedMaterialName.Length > 40)
                         {
-                            int num7 = text27.Length - 40;
-                            text27 = text27.Remove(text27.Length - num7);
+                            int num7 = formatedMaterialName.Length - 40;
+                            formatedMaterialName = formatedMaterialName.Remove(formatedMaterialName.Length - num7);
                         }
-                        bool flag114 = this.m_AllViews.GroupingOptions == 6;
-                        if (flag114)
+                        if (this.m_AllViews.ListMaterialName.Contains(formatedMaterialName))
                         {
-                            bool flag115 = this.m_AllViews.ListMaterialName.Contains(text27);
-                            if (flag115)
+                            this.MaterialFaceName = formatedMaterialName;
+                        }
+                        if (!this.m_AllViews.ListMaterialName.Contains(formatedMaterialName))
+                        {
+                            this.MaterialFaceName = formatedMaterialName;
+                            this.modfU = 1.0;
+                            this.modfV = 1.0;
+                            this.angle = 360.0;
+                            this.Otherpathvalue = null;
+                            ElementId appearanceAssetId2 = material.AppearanceAssetId;
+                            if (appearanceAssetId2.ToString() != "-1")
                             {
-                                this.MaterialFaceName = text27;
-                            }
-                            bool flag116 = !this.m_AllViews.ListMaterialName.Contains(text27);
-                            if (flag116)
-                            {
-                                this.MaterialFaceName = text27;
-                                this.modfU = 1.0;
-                                this.modfV = 1.0;
-                                this.angle = 360.0;
-                                this.Otherpathvalue = null;
-                                ElementId appearanceAssetId2 = material.AppearanceAssetId;
-                                bool flag117 = appearanceAssetId2.ToString() != "-1";
-                                if (flag117)
+                                this.m_AllViews.ImageExist = false;
+                                AppearanceAssetElement appearanceAssetElement2 = this.m_document.GetElement(appearanceAssetId2) as AppearanceAssetElement;
+                                this.MaterialType = "Other";
+                                if (this.MaterialType == "Other")
                                 {
-                                    this.m_AllViews.ImageExist = false;
-                                    AppearanceAssetElement appearanceAssetElement2 = this.m_document.GetElement(appearanceAssetId2) as AppearanceAssetElement;
-                                    this.MaterialType = "Other";
-                                    bool flag118 = this.MaterialType == "Other";
-                                    if (flag118)
+                                    try
                                     {
-                                        try
+                                        this.GetTheBitmaps(appearanceAssetElement2);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                    }
+                                    if (this.m_AllViews.ImageExist)
+                                    {
+                                        bool tintOrNot5 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).TintOrNot;
+                                        bool colorOrNot5 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).ColorOrNot;
+                                        string name7 = material.Name;
+                                        string text53 = name7.Replace(" ", "_");
+                                        if (text53.Length > 40)
                                         {
-                                            this.GetTheBitmaps(appearanceAssetElement2);
+                                            int num21 = text53.Length - 40;
+                                            text53 = text53.Remove(text53.Length - num21);
                                         }
-                                        catch (Exception ex)
+                                        if (!this.m_AllViews.ListMaterialName.Contains(text53))
                                         {
-                                        }
-                                        bool imageExist = this.m_AllViews.ImageExist;
-                                        if (imageExist)
-                                        {
-                                            bool tintOrNot5 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).TintOrNot;
-                                            bool colorOrNot5 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).ColorOrNot;
-                                            string name7 = material.Name;
-                                            string text53 = name7.Replace(" ", "_");
-                                            bool flag119 = text53.Length > 40;
-                                            if (flag119)
+                                            this.m_AllViews.ListMaterialName.Add(text53);
+                                            string text54 = (Convert.ToDouble(node.Color.Red) / 255.0).ToString();
+                                            string text55 = (Convert.ToDouble(node.Color.Green) / 255.0).ToString();
+                                            string text56 = (Convert.ToDouble(node.Color.Blue) / 255.0).ToString();
+                                            double value5 = 1.0 - Convert.ToDouble(node.Transparency);
+                                            double num22 = Math.Round(value5, 2);
+                                            bool flag121 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "water";
+                                            if (flag121)
                                             {
-                                                int num21 = text53.Length - 40;
-                                                text53 = text53.Remove(text53.Length - num21);
+                                                num22 = 0.4;
                                             }
-                                            bool flag120 = !this.m_AllViews.ListMaterialName.Contains(text53);
-                                            if (flag120)
+                                            bool flag122 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "plastic";
+                                            if (flag122)
                                             {
-                                                this.m_AllViews.ListMaterialName.Add(text53);
-                                                string text54 = (Convert.ToDouble(node.Color.Red) / 255.0).ToString();
-                                                string text55 = (Convert.ToDouble(node.Color.Green) / 255.0).ToString();
-                                                string text56 = (Convert.ToDouble(node.Color.Blue) / 255.0).ToString();
-                                                double value5 = 1.0 - Convert.ToDouble(node.Transparency);
-                                                double num22 = Math.Round(value5, 2);
-                                                bool flag121 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "water";
-                                                if (flag121)
+                                                num22 = 0.5;
+                                            }
+                                            bool flag123 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "glazing";
+                                            if (flag123)
+                                            {
+                                                num22 = 0.2;
+                                            }
+                                            if (colorOrNot5)
+                                            {
+                                                text54 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Red) / 255.0).ToString();
+                                                text55 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Green) / 255.0).ToString();
+                                                text56 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Blue) / 255.0).ToString();
+                                            }
+                                            if (tintOrNot5)
+                                            {
+                                                text54 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Red) / 255.0).ToString();
+                                                text55 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Green) / 255.0).ToString();
+                                                text56 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Blue) / 255.0).ToString();
+                                            }
+                                            string text57 = text54;
+                                            text54 = text57.Replace(",", ".");
+                                            string text58 = text55;
+                                            text55 = text58.Replace(",", ".");
+                                            string text59 = text56;
+                                            text56 = text59.Replace(",", ".");
+                                            string text60 = num22.ToString();
+                                            string text61 = text60.Replace(",", ".");
+                                            if (this.Otherpathvalue != null)
+                                            {
+                                                if (this.Otherpathvalue.Contains("|"))
                                                 {
-                                                    num22 = 0.4;
+                                                    this.Otherpathvalue = this.Otherpathvalue.Substring(0, this.Otherpathvalue.IndexOf("|"));
                                                 }
-                                                bool flag122 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "plastic";
-                                                if (flag122)
+                                                if (this.Otherpathvalue.Contains("\\") & this.Otherpathvalue.Contains("/"))
                                                 {
-                                                    num22 = 0.5;
+                                                    this.Otherpathvalue = this.Otherpathvalue.Replace("/", "\\");
                                                 }
-                                                bool flag123 = this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).textureCategorie == "glazing";
-                                                if (flag123)
+                                                if (this.Otherpathvalue.Contains("\\\\"))
                                                 {
-                                                    num22 = 0.2;
+                                                    this.Otherpathvalue = this.Otherpathvalue.Replace("\\\\", "\\");
                                                 }
-                                                bool flag124 = colorOrNot5;
-                                                if (flag124)
+                                                if (File.Exists(this.Otherpathvalue))
                                                 {
-                                                    text54 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Red) / 255.0).ToString();
-                                                    text55 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Green) / 255.0).ToString();
-                                                    text56 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).GenericColor.Blue) / 255.0).ToString();
-                                                }
-                                                bool flag125 = tintOrNot5;
-                                                if (flag125)
-                                                {
-                                                    text54 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Red) / 255.0).ToString();
-                                                    text55 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Green) / 255.0).ToString();
-                                                    text56 = (Convert.ToDouble(this.getTextureNoImage(appearanceAssetElement2, ExportToObjContext.TextureTypes.Diffuse).color.Blue) / 255.0).ToString();
-                                                }
-                                                string text57 = text54;
-                                                text54 = text57.Replace(",", ".");
-                                                string text58 = text55;
-                                                text55 = text58.Replace(",", ".");
-                                                string text59 = text56;
-                                                text56 = text59.Replace(",", ".");
-                                                string text60 = num22.ToString();
-                                                string text61 = text60.Replace(",", ".");
-                                                bool flag126 = this.Otherpathvalue != null;
-                                                if (flag126)
-                                                {
-                                                    bool flag127 = this.Otherpathvalue.Contains("|");
-                                                    if (flag127)
+                                                    this.h_Materials.Add(this.keyNB, this.Otherpathvalue);
+                                                    this.key_Materials = this.h_Materials.Keys;
+                                                    this.h_MaterialNames.Add(this.keyNB, text53);
+                                                    this.h_modfU.Add(this.keyNB, this.modfU);
+                                                    this.h_modfV.Add(this.keyNB, this.modfV);
+                                                    this.keyNB++;
+                                                    this.textureExist = true;
+                                                    string fileName3 = Path.GetFileName(this.Otherpathvalue);
+                                                    string text62 = fileName3.Replace(" ", "_");
+                                                    string text63 = text62;
+                                                    this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
                                                     {
-                                                        this.Otherpathvalue = this.Otherpathvalue.Substring(0, this.Otherpathvalue.IndexOf("|"));
-                                                    }
-                                                    bool flag128 = this.Otherpathvalue.Contains("\\") & this.Otherpathvalue.Contains("/");
-                                                    if (flag128)
-                                                    {
-                                                        this.Otherpathvalue = this.Otherpathvalue.Replace("/", "\\");
-                                                    }
-                                                    bool flag129 = this.Otherpathvalue.Contains("\\\\");
-                                                    if (flag129)
-                                                    {
-                                                        this.Otherpathvalue = this.Otherpathvalue.Replace("\\\\", "\\");
-                                                    }
-                                                    bool flag130 = File.Exists(this.Otherpathvalue);
-                                                    if (flag130)
-                                                    {
-                                                        this.h_Materials.Add(this.keyNB, this.Otherpathvalue);
-                                                        this.key_Materials = this.h_Materials.Keys;
-                                                        this.h_MaterialNames.Add(this.keyNB, text53);
-                                                        this.h_modfU.Add(this.keyNB, this.modfU);
-                                                        this.h_modfV.Add(this.keyNB, this.modfV);
-                                                        this.keyNB++;
-                                                        this.textureExist = true;
-                                                        string fileName3 = Path.GetFileName(this.Otherpathvalue);
-                                                        string text62 = fileName3.Replace(" ", "_");
-                                                        string text63 = text62;
-                                                        this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
-                                                        {
                                                             "newmtl ",
                                                             text53,
                                                             "\nKa ",
@@ -668,13 +651,12 @@ namespace ExportToObj
                                                             "\nmap_Kd ",
                                                             text63,
                                                             "\n"
-                                                        }));
-                                                    }
-                                                    bool flag131 = !File.Exists(this.Otherpathvalue);
-                                                    if (flag131)
+                                                    }));
+                                                }
+                                                if (!File.Exists(this.Otherpathvalue))
+                                                {
+                                                    this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
                                                     {
-                                                        this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
-                                                        {
                                                             "newmtl ",
                                                             text53,
                                                             "\nKa ",
@@ -692,14 +674,13 @@ namespace ExportToObj
                                                             "\nd ",
                                                             text61,
                                                             "\n"
-                                                        }));
-                                                    }
+                                                    }));
                                                 }
-                                                bool flag132 = this.Otherpathvalue == null;
-                                                if (flag132)
+                                            }
+                                            if (this.Otherpathvalue == null)
+                                            {
+                                                this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
                                                 {
-                                                    this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
-                                                    {
                                                         "newmtl ",
                                                         text53,
                                                         "\nKa ",
@@ -717,42 +698,41 @@ namespace ExportToObj
                                                         "\nd ",
                                                         text61,
                                                         "\n"
-                                                    }));
-                                                }
+                                                }));
                                             }
                                         }
-                                        bool flag133 = !this.m_AllViews.ImageExist;
-                                        if (flag133)
+                                    }
+                                    if (!this.m_AllViews.ImageExist)
+                                    {
+                                        string text64 = "0.5";
+                                        string text65 = "0.5";
+                                        string text66 = "0.5";
+                                        double num23 = 1.0;
+                                        bool flag134 = node.Color != null;
+                                        if (flag134)
                                         {
-                                            string text64 = "0.5";
-                                            string text65 = "0.5";
-                                            string text66 = "0.5";
-                                            double num23 = 1.0;
-                                            bool flag134 = node.Color != null;
-                                            if (flag134)
-                                            {
-                                                text64 = (Convert.ToDouble(node.Color.Red) / 255.0).ToString();
-                                                text65 = (Convert.ToDouble(node.Color.Green) / 255.0).ToString();
-                                                text66 = (Convert.ToDouble(node.Color.Blue) / 255.0).ToString();
-                                            }
-                                            bool flag135 = node.Transparency.ToString() != null;
-                                            if (flag135)
-                                            {
-                                                num23 = 1.0 - Convert.ToDouble(node.Transparency);
-                                            }
-                                            string text67 = text64;
-                                            string text68 = text67.Replace(",", ".");
-                                            string text69 = text65;
-                                            string text70 = text69.Replace(",", ".");
-                                            string text71 = text66;
-                                            string text72 = text71.Replace(",", ".");
-                                            string text73 = num23.ToString();
-                                            string text74 = text73.Replace(",", ".");
-                                            this.MaterialFaceName = text27;
-                                            this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
-                                            {
+                                            text64 = (Convert.ToDouble(node.Color.Red) / 255.0).ToString();
+                                            text65 = (Convert.ToDouble(node.Color.Green) / 255.0).ToString();
+                                            text66 = (Convert.ToDouble(node.Color.Blue) / 255.0).ToString();
+                                        }
+                                        bool flag135 = node.Transparency.ToString() != null;
+                                        if (flag135)
+                                        {
+                                            num23 = 1.0 - Convert.ToDouble(node.Transparency);
+                                        }
+                                        string text67 = text64;
+                                        string text68 = text67.Replace(",", ".");
+                                        string text69 = text65;
+                                        string text70 = text69.Replace(",", ".");
+                                        string text71 = text66;
+                                        string text72 = text71.Replace(",", ".");
+                                        string text73 = num23.ToString();
+                                        string text74 = text73.Replace(",", ".");
+                                        this.MaterialFaceName = formatedMaterialName;
+                                        this.m_AllViews.MATERIALsbuilder.Append(string.Concat(new string[]
+                                        {
                                                 "newmtl ",
-                                                text27,
+                                                formatedMaterialName,
                                                 "\nKa ",
                                                 text68,
                                                 " ",
@@ -768,36 +748,35 @@ namespace ExportToObj
                                                 "\nd ",
                                                 text74,
                                                 "\n"
-                                            }));
-                                            bool flag136 = !this.m_AllViews.ListMaterialName.Contains(text27);
-                                            if (flag136)
-                                            {
-                                                this.m_AllViews.ListMaterialName.Add(text27);
-                                            }
+                                        }));
+                                        bool flag136 = !this.m_AllViews.ListMaterialName.Contains(formatedMaterialName);
+                                        if (flag136)
+                                        {
+                                            this.m_AllViews.ListMaterialName.Add(formatedMaterialName);
                                         }
                                     }
                                 }
-                                bool flag137 = appearanceAssetId2.ToString() == "-1";
-                                if (flag137)
+                            }
+                            if (appearanceAssetId2.ToString() == "-1")
+                            {
+                                string name8 = material.Name;
+                                string text75 = name8.Replace(" ", "_");
+                                bool flag138 = text75.Length > 40;
+                                if (flag138)
                                 {
-                                    string name8 = material.Name;
-                                    string text75 = name8.Replace(" ", "_");
-                                    bool flag138 = text75.Length > 40;
-                                    if (flag138)
+                                    int num24 = text75.Length - 40;
+                                    text75 = text75.Remove(text75.Length - num24);
+                                }
+                                bool flag139 = !this.m_AllViews.ListMaterialName.Contains(text75);
+                                if (flag139)
+                                {
+                                    this.m_AllViews.ListMaterialName.Add(text75);
+                                    string text76 = "0.5";
+                                    string text77 = "0.5";
+                                    string text78 = "0.5";
+                                    double num25 = 1.0;
+                                    string value6 = string.Concat(new object[]
                                     {
-                                        int num24 = text75.Length - 40;
-                                        text75 = text75.Remove(text75.Length - num24);
-                                    }
-                                    bool flag139 = !this.m_AllViews.ListMaterialName.Contains(text75);
-                                    if (flag139)
-                                    {
-                                        this.m_AllViews.ListMaterialName.Add(text75);
-                                        string text76 = "0.5";
-                                        string text77 = "0.5";
-                                        string text78 = "0.5";
-                                        double num25 = 1.0;
-                                        string value6 = string.Concat(new object[]
-                                        {
                                             "newmtl ",
                                             text75,
                                             "\nKa ",
@@ -815,12 +794,12 @@ namespace ExportToObj
                                             "\nd ",
                                             num25,
                                             "\n"
-                                        });
-                                        this.m_AllViews.MATERIALsbuilder.Append(value6);
-                                    }
+                                    });
+                                    this.m_AllViews.MATERIALsbuilder.Append(value6);
                                 }
                             }
                         }
+
                     }
                 }
             }
